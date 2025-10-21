@@ -4,15 +4,14 @@ import "./App.css";
 function App() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [fullName, setFullName] = useState(null); // null = no submission yet
+  const [fullName, setFullName] = useState(null); // null = initial page load, "" = invalid submission
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Only set fullName if both fields are non-empty
     if (firstName.trim() && lastName.trim()) {
       setFullName(`${firstName} ${lastName}`);
     } else {
-      setFullName(""); // empty string = invalid submission
+      setFullName(""); // empty string for invalid submission
     }
   };
 
@@ -38,17 +37,14 @@ function App() {
         <button type="submit">Submit</button>
       </form>
 
-      {/* 
-        Logic for rendering <h2>:
-        - If user has never submitted the form (fullName === null), show placeholder for initial page load.
-        - If user submitted with valid fields, show full name.
-        - If user submitted with empty field(s), show nothing.
-      */}
-      {fullName === null ? (
-        <h2>Full Name Display</h2>
-      ) : fullName ? (
-        <h2>Full Name: {fullName}</h2>
-      ) : null}
+      {/* Render <h2> based on submission state */}
+      {
+        fullName === null ? (
+          <h2>Full Name Display</h2> // Initial page load
+        ) : fullName ? (
+          <h2>Full Name: {fullName}</h2> // Valid submission
+        ) : null /* Invalid submission (edge case) */
+      }
     </div>
   );
 }
