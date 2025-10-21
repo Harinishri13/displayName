@@ -1,17 +1,18 @@
 import React, { useState } from "react";
-import './App.css';
+import "./App.css";
 
 function App() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [fullName, setFullName] = useState("");
+  const [fullName, setFullName] = useState(null); // null = no submission yet
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Only set fullName if both fields are non-empty
     if (firstName.trim() && lastName.trim()) {
       setFullName(`${firstName} ${lastName}`);
     } else {
-      setFullName(""); // keep empty if any field is empty
+      setFullName(""); // empty string = invalid submission
     }
   };
 
@@ -37,8 +38,17 @@ function App() {
         <button type="submit">Submit</button>
       </form>
 
-      {/* Always render this so Cypress can find it */}
-      <h2>{fullName ? `Full Name: ${fullName}` : "Full Name Display"}</h2>
+      {/* 
+        Logic for rendering <h2>:
+        - If user has never submitted the form (fullName === null), show placeholder for initial page load.
+        - If user submitted with valid fields, show full name.
+        - If user submitted with empty field(s), show nothing.
+      */}
+      {fullName === null ? (
+        <h2>Full Name Display</h2>
+      ) : fullName ? (
+        <h2>Full Name: {fullName}</h2>
+      ) : null}
     </div>
   );
 }
